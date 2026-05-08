@@ -1,30 +1,53 @@
-import React from "react";
+import { useState } from "react";
 
-function ToyForm() {
+function ToyForm({ addToy }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    // safety check (prevents empty submissions)
+    if (!name || !image) return;
+
+    const newToy = {
+      name: name,
+      image: image,
+      likes: 0,
+    };
+
+    console.log("FORM SUBMITTED:", newToy); // debug check
+
+    addToy(newToy); // 🔥 sends data to App.jsx
+
+    setName("");
+    setImage("");
+  }
+
   return (
     <div className="container">
-      <form className="add-toy-form">
-        <h3>Create a toy!</h3>
+      <form className="add-toy-form" onSubmit={handleSubmit}>
+        
         <input
-          type="text"
-          name="name"
-          placeholder="Enter a toy's name..."
           className="input-text"
-        />
-        <br />
-        <input
           type="text"
-          name="image"
-          placeholder="Enter a toy's image URL..."
-          className="input-text"
+          placeholder="Toy name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
-        <br />
+
         <input
-          type="submit"
-          name="submit"
-          value="Create New Toy"
-          className="submit"
+          className="input-text"
+          type="text"
+          placeholder="Image URL"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
         />
+
+        <button className="submit" type="submit">
+          Add Toy
+        </button>
+
       </form>
     </div>
   );
